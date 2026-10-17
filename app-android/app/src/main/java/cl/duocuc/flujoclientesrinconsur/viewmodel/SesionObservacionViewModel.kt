@@ -94,7 +94,8 @@ class SesionObservacionViewModel : ViewModel() {
                 fechaValida &&
                 horaInicioValida &&
                 horaFinValida &&
-                observadorValido
+                observadorValido &&
+                duracionValida
     }
 
 
