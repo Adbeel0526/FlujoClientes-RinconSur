@@ -8,12 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cl.duocuc.flujoclientesrinconsur.data.local.database.AppDatabase
+import cl.duocuc.flujoclientesrinconsur.data.repository.RegistroObservacionRepository
 import cl.duocuc.flujoclientesrinconsur.data.repository.SesionObservacionRepository
 import cl.duocuc.flujoclientesrinconsur.ui.screens.ObservadorScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.RegistroObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SesionObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SupervisorScreen
 import cl.duocuc.flujoclientesrinconsur.viewmodel.RegistroObservacionViewModel
+import cl.duocuc.flujoclientesrinconsur.viewmodel.RegistroObservacionViewModelFactory
 import cl.duocuc.flujoclientesrinconsur.viewmodel.SesionObservacionViewModel
 import cl.duocuc.flujoclientesrinconsur.viewmodel.SesionObservacionViewModelFactory
 
@@ -77,7 +79,19 @@ fun AppNavegacion() {
 
         composable(Rutas.REGISTRO_OBSERVACION) {
 
-            val registroViewModel: RegistroObservacionViewModel = viewModel()
+            val context = LocalContext.current
+
+            val database = AppDatabase.obtenerBaseDatos(context)
+
+            val repository = RegistroObservacionRepository(
+                database.registroObservacionDao()
+            )
+
+            val factory = RegistroObservacionViewModelFactory(repository)
+
+            val registroViewModel: RegistroObservacionViewModel = viewModel(
+                factory = factory
+            )
 
             val estado = registroViewModel.uiState.collectAsState().value
 
@@ -96,6 +110,10 @@ fun AppNavegacion() {
 
                 onSumarNoDeterminado = {
                     registroViewModel.sumarNoDeterminado()
+                },
+
+                onGuardarRegistro = {
+                    registroViewModel.guardarRegistro()
                 },
 
                 onVolver = {

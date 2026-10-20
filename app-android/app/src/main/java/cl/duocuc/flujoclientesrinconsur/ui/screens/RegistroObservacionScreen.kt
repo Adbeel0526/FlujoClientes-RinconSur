@@ -18,6 +18,7 @@ fun RegistroObservacionScreen(
     onSumarTransito: () -> Unit,
     onSumarVisita: () -> Unit,
     onSumarNoDeterminado: () -> Unit,
+    onGuardarRegistro: () -> Unit,
     onVolver: () -> Unit
 ) {
 
@@ -61,6 +62,13 @@ fun RegistroObservacionScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Registrar no determinado")
+        }
+
+        Button(
+            onClick = onGuardarRegistro,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Finalizar y guardar registro")
         }
 
         Button(
