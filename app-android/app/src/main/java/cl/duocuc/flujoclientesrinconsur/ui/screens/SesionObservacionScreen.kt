@@ -115,13 +115,26 @@ fun SesionObservacionScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        if (estado.mensajeExito != null) {
+            Text(
+                text = estado.mensajeExito
+            )
+        }
+
         Button(
             onClick = {
-                viewModel.validarFormulario()
+                viewModel.programarSesion()
             },
+            enabled = !estado.guardando,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Programar sesión")
+            Text(
+                text = if (estado.guardando) {
+                    "Guardando..."
+                } else {
+                    "Programar sesión"
+                }
+            )
         }
 
         Button(

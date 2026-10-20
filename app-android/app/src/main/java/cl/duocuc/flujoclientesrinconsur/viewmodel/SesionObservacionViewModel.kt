@@ -1,12 +1,18 @@
 package cl.duocuc.flujoclientesrinconsur.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import cl.duocuc.flujoclientesrinconsur.data.local.entity.SesionObservacionEntity
+import cl.duocuc.flujoclientesrinconsur.data.repository.SesionObservacionRepository
 import cl.duocuc.flujoclientesrinconsur.model.SesionObservacionUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class SesionObservacionViewModel : ViewModel() {
+class SesionObservacionViewModel(
+    private val repository: SesionObservacionRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SesionObservacionUiState())
 
@@ -16,7 +22,8 @@ class SesionObservacionViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 acceso = valor,
-                errorAcceso = null
+                errorAcceso = null,
+                mensajeExito = null
             )
         }
     }
@@ -25,7 +32,8 @@ class SesionObservacionViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 fecha = valor,
-                errorFecha = null
+                errorFecha = null,
+                mensajeExito = null
             )
         }
     }
@@ -34,7 +42,8 @@ class SesionObservacionViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 horaInicio = valor,
-                errorHoraInicio = null
+                errorHoraInicio = null,
+                mensajeExito = null
             )
         }
     }
@@ -43,7 +52,8 @@ class SesionObservacionViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 horaFin = valor,
-                errorHoraFin = null
+                errorHoraFin = null,
+                mensajeExito = null
             )
         }
     }
@@ -52,7 +62,8 @@ class SesionObservacionViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 observador = valor,
-                errorObservador = null
+                errorObservador = null,
+                mensajeExito = null
             )
         }
     }
@@ -66,6 +77,7 @@ class SesionObservacionViewModel : ViewModel() {
         val horaInicioValida = estado.horaInicio.isNotBlank()
         val horaFinValida = estado.horaFin.isNotBlank()
         val observadorValido = estado.observador.isNotBlank()
+
         val inicioMinutos = convertirHoraAMinutos(estado.horaInicio)
         val finMinutos = convertirHoraAMinutos(estado.horaFin)
 
@@ -76,17 +88,42 @@ class SesionObservacionViewModel : ViewModel() {
 
         _uiState.update {
             it.copy(
-                errorAcceso = if (accesoValido) null else "Debes seleccionar un acceso",
-                errorFecha = if (fechaValida) null else "Debes ingresar una fecha",
-                errorHoraInicio = if (horaInicioValida) null else "Debes ingresar la hora de inicio",
-                errorHoraFin = if (!horaFinValida) {
-                    "Debes ingresar la hora de término"
-                } else if (!duracionValida) {
-                    "La sesión debe durar entre 30 y 60 minutos"
-                } else {
-                    null
-                },
-                errorObservador = if (observadorValido) null else "Debes seleccionar un observador"
+                errorAcceso =
+                    if (accesoValido) {
+                        null
+                    } else {
+                        "Debes seleccionar un acceso"
+                    },
+
+                errorFecha =
+                    if (fechaValida) {
+                        null
+                    } else {
+                        "Debes ingresar una fecha"
+                    },
+
+                errorHoraInicio =
+                    if (horaInicioValida) {
+                        null
+                    } else {
+                        "Debes ingresar la hora de inicio"
+                    },
+
+                errorHoraFin =
+                    if (!horaFinValida) {
+                        "Debes ingresar la hora de término"
+                    } else if (!duracionValida) {
+                        "La sesión debe durar entre 30 y 60 minutos"
+                    } else {
+                        null
+                    },
+
+                errorObservador =
+                    if (observadorValido) {
+                        null
+                    } else {
+                        "Debes seleccionar un observador"
+                    }
             )
         }
 
@@ -98,6 +135,50 @@ class SesionObservacionViewModel : ViewModel() {
                 duracionValida
     }
 
+    fun programarSesion() {
+
+        if (_uiState.value.guardando) {
+            return
+        }
+
+        if (!validarFormulario()) {
+            return
+        }
+
+        val estado = _uiState.value
+
+        val sesion = SesionObservacionEntity(
+            acceso = estado.acceso,
+            fecha = estado.fecha,
+            horaInicio = estado.horaInicio,
+            horaFin = estado.horaFin,
+            observador = estado.observador
+        )
+
+        _uiState.update {
+            it.copy(
+                guardando = true,
+                mensajeExito = null
+            )
+        }
+
+        viewModelScope.launch {
+
+            repository.insertarSesion(sesion)
+
+            _uiState.update {
+                it.copy(
+                    acceso = "",
+                    fecha = "",
+                    horaInicio = "",
+                    horaFin = "",
+                    observador = "",
+                    guardando = false,
+                    mensajeExito = "Sesión programada correctamente"
+                )
+            }
+        }
+    }
 
     private fun convertirHoraAMinutos(hora: String): Int? {
 
