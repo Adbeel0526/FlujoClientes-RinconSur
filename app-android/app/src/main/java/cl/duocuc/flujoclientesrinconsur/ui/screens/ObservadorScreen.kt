@@ -1,6 +1,8 @@
 package cl.duocuc.flujoclientesrinconsur.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -10,15 +12,29 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ObservadorScreen(
-    onIrSupervisor: () -> Unit
+    onIrSupervisor: () -> Unit,
+    onIniciarRegistro: () -> Unit
 ) {
+
     Column(
-        modifier = Modifier.padding(24.dp)
+        modifier = Modifier.padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(text = "Pantalla Observador")
+
+        Text(
+            text = "Pantalla Observador"
+        )
 
         Button(
-            onClick = onIrSupervisor
+            onClick = onIniciarRegistro,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Iniciar registro de observación")
+        }
+
+        Button(
+            onClick = onIrSupervisor,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Ir a Supervisor")
         }

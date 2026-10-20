@@ -1,6 +1,7 @@
 package cl.duocuc.flujoclientesrinconsur.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -9,8 +10,10 @@ import androidx.navigation.compose.rememberNavController
 import cl.duocuc.flujoclientesrinconsur.data.local.database.AppDatabase
 import cl.duocuc.flujoclientesrinconsur.data.repository.SesionObservacionRepository
 import cl.duocuc.flujoclientesrinconsur.ui.screens.ObservadorScreen
+import cl.duocuc.flujoclientesrinconsur.ui.screens.RegistroObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SesionObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SupervisorScreen
+import cl.duocuc.flujoclientesrinconsur.viewmodel.RegistroObservacionViewModel
 import cl.duocuc.flujoclientesrinconsur.viewmodel.SesionObservacionViewModel
 import cl.duocuc.flujoclientesrinconsur.viewmodel.SesionObservacionViewModelFactory
 
@@ -41,6 +44,9 @@ fun AppNavegacion() {
             ObservadorScreen(
                 onIrSupervisor = {
                     navController.navigate(Rutas.SUPERVISOR)
+                },
+                onIniciarRegistro = {
+                    navController.navigate(Rutas.REGISTRO_OBSERVACION)
                 }
             )
         }
@@ -63,6 +69,35 @@ fun AppNavegacion() {
 
             SesionObservacionScreen(
                 viewModel = viewModel,
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(Rutas.REGISTRO_OBSERVACION) {
+
+            val registroViewModel: RegistroObservacionViewModel = viewModel()
+
+            val estado = registroViewModel.uiState.collectAsState().value
+
+            RegistroObservacionScreen(
+                transito = estado.transito,
+                visita = estado.visita,
+                noDeterminado = estado.noDeterminado,
+
+                onSumarTransito = {
+                    registroViewModel.sumarTransito()
+                },
+
+                onSumarVisita = {
+                    registroViewModel.sumarVisita()
+                },
+
+                onSumarNoDeterminado = {
+                    registroViewModel.sumarNoDeterminado()
+                },
+
                 onVolver = {
                     navController.popBackStack()
                 }
