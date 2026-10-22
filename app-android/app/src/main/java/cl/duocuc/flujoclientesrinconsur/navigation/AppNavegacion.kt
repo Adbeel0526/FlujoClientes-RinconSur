@@ -99,6 +99,8 @@ fun AppNavegacion() {
                 transito = estado.transito,
                 visita = estado.visita,
                 noDeterminado = estado.noDeterminado,
+                guardando = estado.guardando,
+                mensajeExito = estado.mensajeExito,
 
                 onSumarTransito = {
                     registroViewModel.sumarTransito()

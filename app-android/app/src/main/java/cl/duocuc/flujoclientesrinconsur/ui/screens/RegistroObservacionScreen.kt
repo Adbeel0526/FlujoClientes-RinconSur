@@ -15,6 +15,8 @@ fun RegistroObservacionScreen(
     transito: Int,
     visita: Int,
     noDeterminado: Int,
+    guardando: Boolean,
+    mensajeExito: String?,
     onSumarTransito: () -> Unit,
     onSumarVisita: () -> Unit,
     onSumarNoDeterminado: () -> Unit,
@@ -64,11 +66,24 @@ fun RegistroObservacionScreen(
             Text(text = "Registrar no determinado")
         }
 
+        if (mensajeExito != null) {
+            Text(
+                text = mensajeExito
+            )
+        }
+
         Button(
             onClick = onGuardarRegistro,
+            enabled = !guardando,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Finalizar y guardar registro")
+            Text(
+                text = if (guardando) {
+                    "Guardando..."
+                } else {
+                    "Finalizar y guardar registro"
+                }
+            )
         }
 
         Button(

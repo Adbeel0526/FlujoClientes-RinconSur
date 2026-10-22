@@ -23,7 +23,8 @@ class RegistroObservacionViewModel(
     fun sumarTransito() {
         _uiState.update {
             it.copy(
-                transito = it.transito + 1
+                transito = it.transito + 1,
+                mensajeExito = null
             )
         }
     }
@@ -31,7 +32,8 @@ class RegistroObservacionViewModel(
     fun sumarVisita() {
         _uiState.update {
             it.copy(
-                visita = it.visita + 1
+                visita = it.visita + 1,
+                mensajeExito = null
             )
         }
     }
@@ -39,12 +41,17 @@ class RegistroObservacionViewModel(
     fun sumarNoDeterminado() {
         _uiState.update {
             it.copy(
-                noDeterminado = it.noDeterminado + 1
+                noDeterminado = it.noDeterminado + 1,
+                mensajeExito = null
             )
         }
     }
 
     fun guardarRegistro() {
+
+        if (_uiState.value.guardando) {
+            return
+        }
 
         val estado = _uiState.value
 
@@ -54,8 +61,26 @@ class RegistroObservacionViewModel(
             noDeterminado = estado.noDeterminado
         )
 
+        _uiState.update {
+            it.copy(
+                guardando = true,
+                mensajeExito = null
+            )
+        }
+
         viewModelScope.launch {
+
             repository.insertarRegistro(registro)
+
+            _uiState.update {
+                it.copy(
+                    transito = 0,
+                    visita = 0,
+                    noDeterminado = 0,
+                    guardando = false,
+                    mensajeExito = "Registro guardado correctamente"
+                )
+            }
         }
     }
 }
