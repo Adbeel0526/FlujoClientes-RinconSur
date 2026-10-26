@@ -8,7 +8,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import cl.duocuc.flujoclientesrinconsur.util.VibracionHelper
 
 @Composable
 fun RegistroObservacionScreen(
@@ -26,6 +28,8 @@ fun RegistroObservacionScreen(
     onVolver: () -> Unit
 ) {
 
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier.padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -40,7 +44,10 @@ fun RegistroObservacionScreen(
         )
 
         Button(
-            onClick = onSumarTransito,
+            onClick = {
+                VibracionHelper.vibrar(context)
+                onSumarTransito()
+            },
             enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -54,7 +61,10 @@ fun RegistroObservacionScreen(
         )
 
         Button(
-            onClick = onSumarVisita,
+            onClick = {
+                VibracionHelper.vibrar(context)
+                onSumarVisita()
+            },
             enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -68,7 +78,10 @@ fun RegistroObservacionScreen(
         )
 
         Button(
-            onClick = onSumarNoDeterminado,
+            onClick = {
+                VibracionHelper.vibrar(context)
+                onSumarNoDeterminado()
+            },
             enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
