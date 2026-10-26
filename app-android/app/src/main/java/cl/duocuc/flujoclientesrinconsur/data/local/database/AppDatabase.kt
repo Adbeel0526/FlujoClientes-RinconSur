@@ -14,7 +14,7 @@ import cl.duocuc.flujoclientesrinconsur.data.local.entity.SesionObservacionEntit
         SesionObservacionEntity::class,
         RegistroObservacionEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -28,7 +28,9 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun obtenerBaseDatos(context: Context): AppDatabase {
+        fun obtenerBaseDatos(
+            context: Context
+        ): AppDatabase {
 
             return INSTANCE ?: synchronized(this) {
 

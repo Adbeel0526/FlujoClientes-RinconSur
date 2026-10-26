@@ -16,7 +16,9 @@ fun RegistroObservacionScreen(
     visita: Int,
     noDeterminado: Int,
     guardando: Boolean,
+    finalizado: Boolean,
     mensajeExito: String?,
+    mensajeError: String?,
     onSumarTransito: () -> Unit,
     onSumarVisita: () -> Unit,
     onSumarNoDeterminado: () -> Unit,
@@ -39,9 +41,12 @@ fun RegistroObservacionScreen(
 
         Button(
             onClick = onSumarTransito,
+            enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Registrar tránsito")
+            Text(
+                text = "Registrar tránsito"
+            )
         }
 
         Text(
@@ -50,9 +55,12 @@ fun RegistroObservacionScreen(
 
         Button(
             onClick = onSumarVisita,
+            enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Registrar visita")
+            Text(
+                text = "Registrar visita"
+            )
         }
 
         Text(
@@ -61,9 +69,18 @@ fun RegistroObservacionScreen(
 
         Button(
             onClick = onSumarNoDeterminado,
+            enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Registrar no determinado")
+            Text(
+                text = "Registrar no determinado"
+            )
+        }
+
+        if (mensajeError != null) {
+            Text(
+                text = mensajeError
+            )
         }
 
         if (mensajeExito != null) {
@@ -74,15 +91,17 @@ fun RegistroObservacionScreen(
 
         Button(
             onClick = onGuardarRegistro,
-            enabled = !guardando,
+            enabled = !guardando && !finalizado,
             modifier = Modifier.fillMaxWidth()
         ) {
+
             Text(
-                text = if (guardando) {
-                    "Guardando..."
-                } else {
-                    "Finalizar y guardar registro"
-                }
+                text =
+                    when {
+                        finalizado -> "Registro finalizado"
+                        guardando -> "Guardando..."
+                        else -> "Finalizar y guardar registro"
+                    }
             )
         }
 
@@ -90,7 +109,9 @@ fun RegistroObservacionScreen(
             onClick = onVolver,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Volver")
+            Text(
+                text = "Volver"
+            )
         }
     }
 }

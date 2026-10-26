@@ -9,4 +9,11 @@ object Rutas {
     const val SESION_OBSERVACION = "sesion_observacion"
 
     const val REGISTRO_OBSERVACION = "registro_observacion"
+
+    fun registroObservacion(
+        sesionId: Int
+    ): String {
+
+        return "$REGISTRO_OBSERVACION/$sesionId"
+    }
 }

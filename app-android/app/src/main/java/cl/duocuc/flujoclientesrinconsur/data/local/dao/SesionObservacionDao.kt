@@ -11,11 +11,20 @@ import kotlinx.coroutines.flow.Flow
 interface SesionObservacionDao {
 
     @Insert
-    suspend fun insertarSesion(sesion: SesionObservacionEntity)
+    suspend fun insertarSesion(
+        sesion: SesionObservacionEntity
+    )
 
     @Query("SELECT * FROM sesion_observacion ORDER BY id DESC")
     fun obtenerSesiones(): Flow<List<SesionObservacionEntity>>
 
+    @Query("SELECT * FROM sesion_observacion WHERE id = :id LIMIT 1")
+    suspend fun obtenerSesionPorId(
+        id: Int
+    ): SesionObservacionEntity?
+
     @Update
-    suspend fun actualizarSesion(sesion: SesionObservacionEntity)
+    suspend fun actualizarSesion(
+        sesion: SesionObservacionEntity
+    )
 }

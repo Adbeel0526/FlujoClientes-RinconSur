@@ -12,11 +12,21 @@ class SesionObservacionRepository(
         return sesionObservacionDao.obtenerSesiones()
     }
 
-    suspend fun insertarSesion(sesion: SesionObservacionEntity) {
+    suspend fun obtenerSesionPorId(
+        id: Int
+    ): SesionObservacionEntity? {
+        return sesionObservacionDao.obtenerSesionPorId(id)
+    }
+
+    suspend fun insertarSesion(
+        sesion: SesionObservacionEntity
+    ) {
         sesionObservacionDao.insertarSesion(sesion)
     }
 
-    suspend fun actualizarSesion(sesion: SesionObservacionEntity) {
+    suspend fun actualizarSesion(
+        sesion: SesionObservacionEntity
+    ) {
         sesionObservacionDao.actualizarSesion(sesion)
     }
 }
