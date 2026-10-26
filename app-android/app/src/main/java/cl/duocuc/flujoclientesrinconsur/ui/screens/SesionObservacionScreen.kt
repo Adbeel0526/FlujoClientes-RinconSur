@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -52,6 +53,7 @@ fun SesionObservacionScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(FondoApp)
+            .statusBarsPadding()
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
@@ -159,8 +161,7 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("10:00")
                         },
-                        isError =
-                            estado.errorHoraInicio != null,
+                        isError = estado.errorHoraInicio != null,
                         supportingText = {
 
                             estado.errorHoraInicio?.let {
@@ -182,8 +183,7 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("10:45")
                         },
-                        isError =
-                            estado.errorHoraFin != null,
+                        isError = estado.errorHoraFin != null,
                         supportingText = {
 
                             estado.errorHoraFin?.let {
@@ -205,8 +205,7 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("Nombre del observador")
                         },
-                        isError =
-                            estado.errorObservador != null,
+                        isError = estado.errorObservador != null,
                         supportingText = {
 
                             estado.errorObservador?.let {

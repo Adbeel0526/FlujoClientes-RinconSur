@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -49,8 +49,9 @@ fun SupervisorScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(FondoApp)
+            .statusBarsPadding()
             .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
 
         item {
@@ -61,7 +62,7 @@ fun SupervisorScreen(
 
             Text(
                 text = "Panel Supervisor",
-                fontSize = 24.sp,
+                fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextoPrincipal
             )
@@ -70,10 +71,6 @@ fun SupervisorScreen(
                 text = "Resumen general de las sesiones",
                 fontSize = 14.sp,
                 color = TextoSecundario
-            )
-
-            Spacer(
-                modifier = Modifier.height(8.dp)
             )
         }
 
@@ -84,8 +81,8 @@ fun SupervisorScreen(
             ) {
 
                 ResumenCard(
-                    titulo = "Sesiones",
                     valor = estado.sesiones.size.toString(),
+                    titulo = "Sesiones",
                     modifier = Modifier.weight(1f)
                 )
 
@@ -94,8 +91,8 @@ fun SupervisorScreen(
                 )
 
                 ResumenCard(
-                    titulo = "Registros",
                     valor = estado.registros.size.toString(),
+                    titulo = "Registros",
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -107,7 +104,7 @@ fun SupervisorScreen(
                 onClick = onProgramarSesion,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(52.dp),
+                    .height(54.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MoradoPrincipal
@@ -185,7 +182,7 @@ fun SupervisorScreen(
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
                     )
@@ -198,62 +195,127 @@ fun SupervisorScreen(
                     )
                 }
             }
-        }
 
-        items(
-            estado.sesiones
-        ) { sesion ->
+        } else {
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 2.dp
-                )
-            ) {
+            items(
+                estado.sesiones
+            ) { sesion ->
 
-                Column(
-                    modifier = Modifier.padding(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(7.dp)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 2.dp
+                    )
                 ) {
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                    Column(
+                        modifier = Modifier.padding(18.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+
+                            Text(
+                                text = "Sesión #${sesion.id}",
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextoPrincipal
+                            )
+
+                            EstadoSesion(
+                                estado = sesion.estado
+                            )
+                        }
+
+                        Text(
+                            text = "Acceso ${sesion.acceso}",
+                            fontWeight = FontWeight.SemiBold,
+                            color = TextoPrincipal
+                        )
+
+                        Text(
+                            text = "${sesion.fecha} · ${sesion.horaInicio} - ${sesion.horaFin}",
+                            fontSize = 14.sp,
+                            color = TextoSecundario
+                        )
+
+                        Text(
+                            text = "Observador: ${sesion.observador}",
+                            fontSize = 14.sp,
+                            color = TextoSecundario
+                        )
+                    }
+                }
+            }
+        }
+
+        if (estado.registros.isNotEmpty()) {
+
+            item {
+
+                Text(
+                    text = "Registros",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextoPrincipal
+                )
+            }
+
+            items(
+                estado.registros
+            ) { registro ->
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 2.dp
+                    )
+                ) {
+
+                    Column(
+                        modifier = Modifier.padding(18.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
 
                         Text(
-                            text = "Sesión #${sesion.id}",
+                            text = "Registro #${registro.id}",
                             fontSize = 17.sp,
                             fontWeight = FontWeight.Bold,
                             color = TextoPrincipal
                         )
 
-                        EstadoSesion(
-                            estado = sesion.estado
+                        Text(
+                            text = "Sesión #${registro.sesionId}",
+                            color = TextoSecundario
+                        )
+
+                        Text(
+                            text = "Tránsito: ${registro.transito}",
+                            color = TextoSecundario
+                        )
+
+                        Text(
+                            text = "Visita: ${registro.visita}",
+                            color = TextoSecundario
+                        )
+
+                        Text(
+                            text = "No determinado: ${registro.noDeterminado}",
+                            color = TextoSecundario
                         )
                     }
-
-                    Text(
-                        text = "Acceso ${sesion.acceso}",
-                        color = TextoPrincipal,
-                        fontWeight = FontWeight.Medium
-                    )
-
-                    Text(
-                        text = "${sesion.fecha} · ${sesion.horaInicio} - ${sesion.horaFin}",
-                        color = TextoSecundario,
-                        fontSize = 14.sp
-                    )
-
-                    Text(
-                        text = "Observador: ${sesion.observador}",
-                        color = TextoSecundario,
-                        fontSize = 14.sp
-                    )
                 }
             }
         }
@@ -261,7 +323,7 @@ fun SupervisorScreen(
         item {
 
             Spacer(
-                modifier = Modifier.height(16.dp)
+                modifier = Modifier.height(20.dp)
             )
         }
     }
@@ -269,8 +331,8 @@ fun SupervisorScreen(
 
 @Composable
 private fun ResumenCard(
-    titulo: String,
     valor: String,
+    titulo: String,
     modifier: Modifier = Modifier
 ) {
 
@@ -310,15 +372,18 @@ private fun EstadoSesion(
     estado: String
 ) {
 
-    val colorFondo =
-        if (estado == "FINALIZADA") {
+    val esFinalizada =
+        estado == "FINALIZADA"
+
+    val fondo =
+        if (esFinalizada) {
             VerdeClaro
         } else {
             NaranjaClaro
         }
 
-    val colorTexto =
-        if (estado == "FINALIZADA") {
+    val texto =
+        if (esFinalizada) {
             VerdeExito
         } else {
             NaranjaPendiente
@@ -327,8 +392,8 @@ private fun EstadoSesion(
     Box(
         modifier = Modifier
             .background(
-                color = colorFondo,
-                shape = RoundedCornerShape(50)
+                color = fondo,
+                shape = RoundedCornerShape(20.dp)
             )
             .padding(
                 horizontal = 10.dp,
@@ -340,7 +405,7 @@ private fun EstadoSesion(
             text = estado,
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
-            color = colorTexto
+            color = texto
         )
     }
 }

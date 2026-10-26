@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +33,6 @@ import cl.duocuc.flujoclientesrinconsur.ui.theme.MoradoClaro
 import cl.duocuc.flujoclientesrinconsur.ui.theme.MoradoPrincipal
 import cl.duocuc.flujoclientesrinconsur.ui.theme.TextoPrincipal
 import cl.duocuc.flujoclientesrinconsur.ui.theme.TextoSecundario
-import cl.duocuc.flujoclientesrinconsur.ui.theme.VerdeClaro
 import cl.duocuc.flujoclientesrinconsur.ui.theme.VerdeExito
 
 @Composable
@@ -45,6 +45,7 @@ fun DashboardScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(FondoApp)
+            .statusBarsPadding()
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -230,7 +231,10 @@ private fun IndicadorFlujo(
 ) {
 
     val progresoObjetivo =
-        porcentaje.coerceIn(0, 100) / 100f
+        porcentaje.coerceIn(
+            0,
+            100
+        ) / 100f
 
     val progresoAnimado by animateFloatAsState(
         targetValue = progresoObjetivo,
