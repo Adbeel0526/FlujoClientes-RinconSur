@@ -60,7 +60,7 @@ fun SupervisorScreen(
             )
 
             Text(
-                text = "Hola, Carlos",
+                text = "Panel Supervisor",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextoPrincipal
