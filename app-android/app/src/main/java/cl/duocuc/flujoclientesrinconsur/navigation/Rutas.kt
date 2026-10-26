@@ -10,6 +10,8 @@ object Rutas {
 
     const val REGISTRO_OBSERVACION = "registro_observacion"
 
+    const val DASHBOARD = "dashboard"
+
     fun registroObservacion(
         sesionId: Int
     ): String {

@@ -18,7 +18,8 @@ import cl.duocuc.flujoclientesrinconsur.model.SupervisorUiState
 fun SupervisorScreen(
     estado: SupervisorUiState,
     onIrObservador: () -> Unit,
-    onProgramarSesion: () -> Unit
+    onProgramarSesion: () -> Unit,
+    onIrDashboard: () -> Unit
 ) {
 
     LazyColumn(
@@ -27,16 +28,19 @@ fun SupervisorScreen(
     ) {
 
         item {
+
             Text(
                 text = "Panel Supervisor"
             )
         }
 
         item {
+
             Button(
                 onClick = onProgramarSesion,
                 modifier = Modifier.fillMaxWidth()
             ) {
+
                 Text(
                     text = "Programar sesión"
                 )
@@ -44,10 +48,12 @@ fun SupervisorScreen(
         }
 
         item {
+
             Button(
                 onClick = onIrObservador,
                 modifier = Modifier.fillMaxWidth()
             ) {
+
                 Text(
                     text = "Ir a Observador"
                 )
@@ -55,12 +61,28 @@ fun SupervisorScreen(
         }
 
         item {
+
+            Button(
+                onClick = onIrDashboard,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Text(
+                    text = "Ver dashboard"
+                )
+            }
+        }
+
+        item {
+
             Text(
-                text = "Sesiones programadas: ${estado.sesiones.size}"
+                text = "Sesiones: ${estado.sesiones.size}"
             )
         }
 
-        items(estado.sesiones) { sesion ->
+        items(
+            estado.sesiones
+        ) { sesion ->
 
             Card(
                 modifier = Modifier.fillMaxWidth()
@@ -99,12 +121,15 @@ fun SupervisorScreen(
         }
 
         item {
+
             Text(
                 text = "Registros de observación: ${estado.registros.size}"
             )
         }
 
-        items(estado.registros) { registro ->
+        items(
+            estado.registros
+        ) { registro ->
 
             Card(
                 modifier = Modifier.fillMaxWidth()

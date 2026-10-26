@@ -10,10 +10,13 @@ import androidx.navigation.compose.rememberNavController
 import cl.duocuc.flujoclientesrinconsur.data.local.database.AppDatabase
 import cl.duocuc.flujoclientesrinconsur.data.repository.RegistroObservacionRepository
 import cl.duocuc.flujoclientesrinconsur.data.repository.SesionObservacionRepository
+import cl.duocuc.flujoclientesrinconsur.ui.screens.DashboardScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.ObservadorScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.RegistroObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SesionObservacionScreen
 import cl.duocuc.flujoclientesrinconsur.ui.screens.SupervisorScreen
+import cl.duocuc.flujoclientesrinconsur.viewmodel.DashboardViewModel
+import cl.duocuc.flujoclientesrinconsur.viewmodel.DashboardViewModelFactory
 import cl.duocuc.flujoclientesrinconsur.viewmodel.ObservadorViewModel
 import cl.duocuc.flujoclientesrinconsur.viewmodel.ObservadorViewModelFactory
 import cl.duocuc.flujoclientesrinconsur.viewmodel.RegistroObservacionViewModel
@@ -37,74 +40,150 @@ fun AppNavegacion() {
 
             val context = LocalContext.current
 
-            val database = AppDatabase.obtenerBaseDatos(
-                context
-            )
+            val database =
+                AppDatabase.obtenerBaseDatos(
+                    context
+                )
 
-            val sesionRepository = SesionObservacionRepository(
-                database.sesionObservacionDao()
-            )
+            val sesionRepository =
+                SesionObservacionRepository(
+                    database.sesionObservacionDao()
+                )
 
-            val registroRepository = RegistroObservacionRepository(
-                database.registroObservacionDao()
-            )
+            val registroRepository =
+                RegistroObservacionRepository(
+                    database.registroObservacionDao()
+                )
 
-            val factory = SupervisorViewModelFactory(
-                sesionRepository,
-                registroRepository
-            )
+            val factory =
+                SupervisorViewModelFactory(
+                    sesionRepository,
+                    registroRepository
+                )
 
-            val supervisorViewModel: SupervisorViewModel = viewModel(
-                factory = factory
-            )
+            val supervisorViewModel:
+                    SupervisorViewModel =
+                viewModel(
+                    factory = factory
+                )
 
             val estado =
-                supervisorViewModel.uiState.collectAsState().value
+                supervisorViewModel
+                    .uiState
+                    .collectAsState()
+                    .value
 
             SupervisorScreen(
                 estado = estado,
 
                 onIrObservador = {
+
                     navController.navigate(
                         Rutas.OBSERVADOR
                     )
                 },
 
                 onProgramarSesion = {
+
                     navController.navigate(
                         Rutas.SESION_OBSERVACION
                     )
+                },
+
+                onIrDashboard = {
+
+                    navController.navigate(
+                        Rutas.DASHBOARD
+                    )
+                }
+            )
+        }
+
+        composable(Rutas.DASHBOARD) {
+
+            val context =
+                LocalContext.current
+
+            val database =
+                AppDatabase.obtenerBaseDatos(
+                    context
+                )
+
+            val sesionRepository =
+                SesionObservacionRepository(
+                    database.sesionObservacionDao()
+                )
+
+            val registroRepository =
+                RegistroObservacionRepository(
+                    database.registroObservacionDao()
+                )
+
+            val factory =
+                DashboardViewModelFactory(
+                    sesionRepository,
+                    registroRepository
+                )
+
+            val dashboardViewModel:
+                    DashboardViewModel =
+                viewModel(
+                    factory = factory
+                )
+
+            val estado =
+                dashboardViewModel
+                    .uiState
+                    .collectAsState()
+                    .value
+
+            DashboardScreen(
+                estado = estado,
+
+                onVolver = {
+
+                    navController.popBackStack()
                 }
             )
         }
 
         composable(Rutas.OBSERVADOR) {
 
-            val context = LocalContext.current
+            val context =
+                LocalContext.current
 
-            val database = AppDatabase.obtenerBaseDatos(
-                context
-            )
+            val database =
+                AppDatabase.obtenerBaseDatos(
+                    context
+                )
 
-            val sesionRepository = SesionObservacionRepository(
-                database.sesionObservacionDao()
-            )
+            val sesionRepository =
+                SesionObservacionRepository(
+                    database.sesionObservacionDao()
+                )
 
-            val factory = ObservadorViewModelFactory(
-                sesionRepository
-            )
+            val factory =
+                ObservadorViewModelFactory(
+                    sesionRepository
+                )
 
-            val observadorViewModel: ObservadorViewModel = viewModel(
-                factory = factory
-            )
+            val observadorViewModel:
+                    ObservadorViewModel =
+                viewModel(
+                    factory = factory
+                )
 
             val estado =
-                observadorViewModel.uiState.collectAsState().value
+                observadorViewModel
+                    .uiState
+                    .collectAsState()
+                    .value
 
             ObservadorScreen(
                 estado = estado,
 
-                onSeleccionarSesion = { sesionId ->
+                onSeleccionarSesion = {
+                        sesionId ->
 
                     navController.navigate(
                         Rutas.registroObservacion(
@@ -114,35 +193,46 @@ fun AppNavegacion() {
                 },
 
                 onIrSupervisor = {
+
                     navController.popBackStack()
                 }
             )
         }
 
-        composable(Rutas.SESION_OBSERVACION) {
+        composable(
+            Rutas.SESION_OBSERVACION
+        ) {
 
-            val context = LocalContext.current
+            val context =
+                LocalContext.current
 
-            val database = AppDatabase.obtenerBaseDatos(
-                context
-            )
+            val database =
+                AppDatabase.obtenerBaseDatos(
+                    context
+                )
 
-            val repository = SesionObservacionRepository(
-                database.sesionObservacionDao()
-            )
+            val repository =
+                SesionObservacionRepository(
+                    database.sesionObservacionDao()
+                )
 
-            val factory = SesionObservacionViewModelFactory(
-                repository
-            )
+            val factory =
+                SesionObservacionViewModelFactory(
+                    repository
+                )
 
-            val sesionViewModel: SesionObservacionViewModel = viewModel(
-                factory = factory
-            )
+            val sesionViewModel:
+                    SesionObservacionViewModel =
+                viewModel(
+                    factory = factory
+                )
 
             SesionObservacionScreen(
-                viewModel = sesionViewModel,
+                viewModel =
+                    sesionViewModel,
 
                 onVolver = {
+
                     navController.popBackStack()
                 }
             )
@@ -153,17 +243,22 @@ fun AppNavegacion() {
         ) { backStackEntry ->
 
             val sesionId =
-                backStackEntry.arguments
-                    ?.getString("sesionId")
+                backStackEntry
+                    .arguments
+                    ?.getString(
+                        "sesionId"
+                    )
                     ?.toIntOrNull()
 
             if (sesionId != null) {
 
-                val context = LocalContext.current
+                val context =
+                    LocalContext.current
 
-                val database = AppDatabase.obtenerBaseDatos(
-                    context
-                )
+                val database =
+                    AppDatabase.obtenerBaseDatos(
+                        context
+                    )
 
                 val registroRepository =
                     RegistroObservacionRepository(
@@ -188,37 +283,63 @@ fun AppNavegacion() {
                     )
 
                 val estado =
-                    registroViewModel.uiState.collectAsState().value
+                    registroViewModel
+                        .uiState
+                        .collectAsState()
+                        .value
 
                 RegistroObservacionScreen(
-                    transito = estado.transito,
-                    visita = estado.visita,
-                    noDeterminado = estado.noDeterminado,
-                    guardando = estado.guardando,
-                    finalizado = estado.finalizado,
-                    mensajeExito = estado.mensajeExito,
-                    mensajeError = estado.mensajeError,
+                    transito =
+                        estado.transito,
+
+                    visita =
+                        estado.visita,
+
+                    noDeterminado =
+                        estado.noDeterminado,
+
+                    guardando =
+                        estado.guardando,
+
+                    finalizado =
+                        estado.finalizado,
+
+                    mensajeExito =
+                        estado.mensajeExito,
+
+                    mensajeError =
+                        estado.mensajeError,
 
                     onSumarTransito = {
-                        registroViewModel.sumarTransito()
+
+                        registroViewModel
+                            .sumarTransito()
                     },
 
                     onSumarVisita = {
-                        registroViewModel.sumarVisita()
+
+                        registroViewModel
+                            .sumarVisita()
                     },
 
                     onSumarNoDeterminado = {
-                        registroViewModel.sumarNoDeterminado()
+
+                        registroViewModel
+                            .sumarNoDeterminado()
                     },
 
                     onGuardarRegistro = {
-                        registroViewModel.guardarRegistro(
-                            sesionId
-                        )
+
+                        registroViewModel
+                            .guardarRegistro(
+                                sesionId
+                            )
                     },
 
                     onVolver = {
-                        navController.popBackStack()
+
+                        navController
+                            .popBackStack()
                     }
                 )
             }
