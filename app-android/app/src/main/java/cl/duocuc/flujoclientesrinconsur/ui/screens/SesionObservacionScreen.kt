@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,6 +55,7 @@ fun SesionObservacionScreen(
             .fillMaxSize()
             .background(FondoApp)
             .statusBarsPadding()
+            .imePadding()
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
@@ -114,18 +116,22 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("1, 2, 3 o 4")
                         },
-                        isError = estado.errorAcceso != null,
+                        isError =
+                            estado.errorAcceso != null,
                         supportingText = {
 
                             estado.errorAcceso?.let {
                                 Text(it)
                             }
                         },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
+                        keyboardOptions =
+                            KeyboardOptions(
+                                keyboardType =
+                                    KeyboardType.Number
+                            ),
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier =
+                            Modifier.fillMaxWidth()
                     )
 
                     OutlinedTextField(
@@ -139,7 +145,8 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("dd/MM/yyyy")
                         },
-                        isError = estado.errorFecha != null,
+                        isError =
+                            estado.errorFecha != null,
                         supportingText = {
 
                             estado.errorFecha?.let {
@@ -147,13 +154,15 @@ fun SesionObservacionScreen(
                             }
                         },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier =
+                            Modifier.fillMaxWidth()
                     )
 
                     OutlinedTextField(
                         value = estado.horaInicio,
                         onValueChange = {
-                            viewModel.onHoraInicioCambia(it)
+                            viewModel
+                                .onHoraInicioCambia(it)
                         },
                         label = {
                             Text("Hora de inicio")
@@ -161,7 +170,8 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("10:00")
                         },
-                        isError = estado.errorHoraInicio != null,
+                        isError =
+                            estado.errorHoraInicio != null,
                         supportingText = {
 
                             estado.errorHoraInicio?.let {
@@ -169,13 +179,15 @@ fun SesionObservacionScreen(
                             }
                         },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier =
+                            Modifier.fillMaxWidth()
                     )
 
                     OutlinedTextField(
                         value = estado.horaFin,
                         onValueChange = {
-                            viewModel.onHoraFinCambia(it)
+                            viewModel
+                                .onHoraFinCambia(it)
                         },
                         label = {
                             Text("Hora de término")
@@ -183,7 +195,8 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("10:45")
                         },
-                        isError = estado.errorHoraFin != null,
+                        isError =
+                            estado.errorHoraFin != null,
                         supportingText = {
 
                             estado.errorHoraFin?.let {
@@ -191,13 +204,15 @@ fun SesionObservacionScreen(
                             }
                         },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier =
+                            Modifier.fillMaxWidth()
                     )
 
                     OutlinedTextField(
                         value = estado.observador,
                         onValueChange = {
-                            viewModel.onObservadorCambia(it)
+                            viewModel
+                                .onObservadorCambia(it)
                         },
                         label = {
                             Text("Observador")
@@ -205,7 +220,8 @@ fun SesionObservacionScreen(
                         placeholder = {
                             Text("Nombre del observador")
                         },
-                        isError = estado.errorObservador != null,
+                        isError =
+                            estado.errorObservador != null,
                         supportingText = {
 
                             estado.errorObservador?.let {
@@ -213,7 +229,8 @@ fun SesionObservacionScreen(
                             }
                         },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier =
+                            Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -222,24 +239,33 @@ fun SesionObservacionScreen(
         item {
 
             AnimatedVisibility(
-                visible = estado.mensajeExito != null,
+                visible =
+                    estado.mensajeExito != null,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
 
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = VerdeClaro
-                    )
+                    modifier =
+                        Modifier.fillMaxWidth(),
+                    shape =
+                        RoundedCornerShape(14.dp),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor =
+                                VerdeClaro
+                        )
                 ) {
 
                     Text(
-                        text = estado.mensajeExito ?: "",
-                        modifier = Modifier.padding(16.dp),
-                        color = VerdeExito,
-                        fontWeight = FontWeight.SemiBold
+                        text =
+                            estado.mensajeExito ?: "",
+                        modifier =
+                            Modifier.padding(16.dp),
+                        color =
+                            VerdeExito,
+                        fontWeight =
+                            FontWeight.SemiBold
                     )
                 }
             }
@@ -251,14 +277,18 @@ fun SesionObservacionScreen(
                 onClick = {
                     viewModel.programarSesion()
                 },
-                enabled = !estado.guardando,
+                enabled =
+                    !estado.guardando,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MoradoPrincipal
-                )
+                shape =
+                    RoundedCornerShape(14.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor =
+                            MoradoPrincipal
+                    )
             ) {
 
                 Text(
@@ -268,7 +298,8 @@ fun SesionObservacionScreen(
                         } else {
                             "Programar sesión"
                         },
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight =
+                        FontWeight.SemiBold
                 )
             }
         }
@@ -280,20 +311,27 @@ fun SesionObservacionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MoradoClaro,
-                    contentColor = MoradoPrincipal
-                )
+                shape =
+                    RoundedCornerShape(14.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor =
+                            MoradoClaro,
+                        contentColor =
+                            MoradoPrincipal
+                    )
             ) {
 
                 Text(
                     text = "Volver"
                 )
             }
+        }
+
+        item {
 
             Spacer(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.height(40.dp)
             )
         }
     }
